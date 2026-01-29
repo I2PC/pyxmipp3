@@ -23,8 +23,7 @@ target_link_libraries(
 		FFTW3::DoubleThreads
 		FFTW3::FloatThreads
         JPEG::JPEG
-        TIFF::TIFF
-        ZLIB::ZLIB
+        TIFF::tiff
 )
 target_include_directories(
     xmippLib 
