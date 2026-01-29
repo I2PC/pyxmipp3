@@ -18,10 +18,10 @@ target_link_libraries(
         hdf5-static
         hdf5_cpp-static
         sqlite3
-        fftw
-        fftw_threads
-        fftw3f 
-        fftw3f_threads
+        FFTW3::Double
+		FFTW3::Float
+		FFTW3::DoubleThreads
+		FFTW3::FloatThreads
         JPEG::JPEG
         TIFF::tiff
 )

@@ -4,24 +4,68 @@ include(FetchContent)
 
 function(fetch_fftw3)
 	set(FFTW3_URL https://fftw.org/fftw-3.3.10.tar.gz)
+	set(FFTW3_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/fftw3)
+	set(FFTW3_INCLUDE_DIR ${FFTW3_INSTALL_DIR}/include)
+	file(MAKE_DIRECTORY ${FFTW3_INCLUDE_DIR})
 
 	cmake_policy(SET CMP0135 NEW) # To avoid warnings
-	FetchContent_Declare(
-        fftw3_double
+	ExternalProject_Add(
+		fftw3_float_external
 		URL ${FFTW3_URL}
+		PREFIX ${CMAKE_CURRENT_BINARY_DIR}/fftw3_float_build
+    	INSTALL_DIR ${FFTW3_INSTALL_DIR}
+		CMAKE_ARGS
+			-DCMAKE_INSTALL_PREFIX=${FFTW3_INSTALL_DIR}
+			-DPOSITION_INDEPENDENT_CODE=ON
+			-DBUILD_SHARED_LIBS=OFF
+			-DBUILD_TESTS=OFF
+			-DENABLE_THREADS=ON
+			-DENABLE_FLOAT=ON
+		LOG_DOWNLOAD ON
+		LOG_CONFIGURE ON
+		LOG_BUILD ON
+	)
+	ExternalProject_Add(
+		fftw3_double_external
+		URL ${FFTW3_URL}
+		PREFIX ${CMAKE_CURRENT_BINARY_DIR}/fftw3_double_build
+    	INSTALL_DIR ${FFTW3_INSTALL_DIR}
+		CMAKE_ARGS
+			-DCMAKE_INSTALL_PREFIX=${FFTW3_INSTALL_DIR}
+			-DPOSITION_INDEPENDENT_CODE=ON
+			-DBUILD_SHARED_LIBS=OFF
+			-DBUILD_TESTS=OFF
+			-DENABLE_THREADS=ON
+		LOG_DOWNLOAD ON
+		LOG_CONFIGURE ON
+		LOG_BUILD ON
 	)
 
-	set(POSITION_INDEPENDENT_CODE ON)
-	set(BUILD_SHARED_LIBS OFF)
-	set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
-	set(ENABLE_THREADS ON CACHE BOOL "" FORCE)
-	FetchContent_MakeAvailable(fftw3_double)
-
-	FetchContent_Declare(
-        fftw3_float
-		URL ${FFTW3_URL}
+	add_library(FFTW3::Float STATIC IMPORTED)
+	set_target_properties(FFTW3::Float PROPERTIES
+		IMPORTED_LOCATION ${FFTW3_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}fftw3f${CMAKE_STATIC_LIBRARY_SUFFIX}
+		INTERFACE_INCLUDE_DIRECTORIES ${FFTW3_INCLUDE_DIR}
 	)
+	add_dependencies(FFTW3::Float fftw3_float_external)
 
-	set(ENABLE_FLOAT ON CACHE BOOL "" FORCE)
-	FetchContent_MakeAvailable(fftw3_float)
+	add_library(FFTW3::FloatThreads STATIC IMPORTED)
+	set_target_properties(FFTW3::FloatThreads PROPERTIES
+		IMPORTED_LOCATION ${FFTW3_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}fftw3f_threads${CMAKE_STATIC_LIBRARY_SUFFIX}
+		INTERFACE_INCLUDE_DIRECTORIES ${FFTW3_INCLUDE_DIR}
+	)
+	add_dependencies(FFTW3::FloatThreads fftw3_float_external)
+
+	add_library(FFTW3::Double STATIC IMPORTED)
+	set_target_properties(FFTW3::Double PROPERTIES
+		IMPORTED_LOCATION ${FFTW3_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}fftw3${CMAKE_STATIC_LIBRARY_SUFFIX}
+		INTERFACE_INCLUDE_DIRECTORIES ${FFTW3_INCLUDE_DIR}
+	)
+	add_dependencies(FFTW3::Double fftw3_double_external)
+
+	add_library(FFTW3::DoubleThreads STATIC IMPORTED)
+	set_target_properties(FFTW3::DoubleThreads PROPERTIES
+		IMPORTED_LOCATION ${FFTW3_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}fftw3_threads${CMAKE_STATIC_LIBRARY_SUFFIX}
+		INTERFACE_INCLUDE_DIRECTORIES ${FFTW3_INCLUDE_DIR}
+	)
+	add_dependencies(FFTW3::DoubleThreads fftw3_double_external)
 endfunction()
