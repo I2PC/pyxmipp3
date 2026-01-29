@@ -13,8 +13,8 @@ function(fetch_fftw3)
 
 	set(POSITION_INDEPENDENT_CODE ON)
 	set(BUILD_SHARED_LIBS OFF)
-	set(BUILD_TESTS OFF)
-	set(ENABLE_THREADS ON)
+	set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+	set(ENABLE_THREADS ON CACHE BOOL "" FORCE)
 	FetchContent_MakeAvailable(fftw3_double)
 
 	FetchContent_Declare(
@@ -22,6 +22,6 @@ function(fetch_fftw3)
 		URL ${FFTW3_URL}
 	)
 
-	set(ENABLE_FLOAT ON)
+	set(ENABLE_FLOAT ON CACHE BOOL "" FORCE)
 	FetchContent_MakeAvailable(fftw3_float)
 endfunction()
