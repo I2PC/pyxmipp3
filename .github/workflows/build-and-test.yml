@@ -32,6 +32,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install NumPy
+        run: |
+          pip install numpy
+        
       - name: Configure and build with CMake
         uses: threeal/cmake-action@v2
         with:
