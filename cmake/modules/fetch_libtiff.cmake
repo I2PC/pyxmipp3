@@ -3,15 +3,36 @@ cmake_minimum_required(VERSION 3.16)
 include(FetchContent)
 
 function(fetch_libtiff)
+	set(TIFF_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/tiff)
+	set(TIFF_INCLUDE_DIR ${TIFF_INSTALL_DIR}/${CMAKE_INSTALL_INCLUDEDIR})
+	set(TIFF_STATIC_LIBRARY ${TIFF_INSTALL_DIR}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}tiff${CMAKE_STATIC_LIBRARY_SUFFIX})
+	file(MAKE_DIRECTORY ${TIFF_INCLUDE_DIR})
+
 	cmake_policy(SET CMP0135 NEW) # To avoid warnings
-	FetchContent_Declare(
-        libtiff
+	ExternalProject_Add(
+		tiff_external
 		URL https://download.osgeo.org/libtiff/tiff-4.7.1.tar.gz
+		PREFIX ${CMAKE_CURRENT_BINARY_DIR}/tiff_build
+    	INSTALL_DIR ${TIFF_INSTALL_DIR}
+		CMAKE_ARGS
+			-DCMAKE_INSTALL_PREFIX=${TIFF_INSTALL_DIR}
+			-DCMAKE_POSITION_INDEPENDENT_CODE=ON
+			-DBUILD_SHARED_LIBS=OFF
+			-Dtiff-static=ON
+			-Dtiff-docs=OFF
+			-Dtiff-tools=OFF
+
+		LOG_DOWNLOAD ON
+		LOG_CONFIGURE ON
+		LOG_BUILD ON
+		BUILD_BYPRODUCTS
+			${TIFF_STATIC_LIBRARY}
 	)
 
-	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-	set(BUILD_SHARED_LIBS OFF)
-	set(tiff-install OFF)
-	set(tiff-docs OFF)
-	FetchContent_MakeAvailable(libtiff)
+	add_library(TIFF::TIFF STATIC IMPORTED)
+	set_target_properties(TIFF::TIFF PROPERTIES
+		IMPORTED_LOCATION ${TIFF_STATIC_LIBRARY}
+		INTERFACE_INCLUDE_DIRECTORIES ${TIFF_INCLUDE_DIR}
+	)
+	add_dependencies(TIFF::TIFF tiff_external)
 endfunction()
