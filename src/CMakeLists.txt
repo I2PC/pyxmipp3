@@ -15,8 +15,8 @@ target_link_libraries(
     PRIVATE 
         Threads::Threads
         Python::Module
-        hdf5-static
-        hdf5_cpp-static
+        HDF5::HDF5
+        HDF5::CXX
         sqlite3
         FFTW3::Double
 		FFTW3::Float
@@ -34,7 +34,6 @@ target_include_directories(
 set_target_properties(xmippLib 
     PROPERTIES
         PREFIX ""
-        SUFFIX "${Python_MODULE_PREFIX}${Python_MODULE_EXTENSION}"
         OUTPUT_NAME "xmippLib"
 )
 

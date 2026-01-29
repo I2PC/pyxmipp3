@@ -9,7 +9,7 @@ function(fetch_libtiff)
 		URL https://download.osgeo.org/libtiff/tiff-4.7.1.tar.gz
 	)
 
-	set(POSITION_INDEPENDENT_CODE ON)
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 	set(BUILD_SHARED_LIBS OFF)
 	FetchContent_MakeAvailable(libtiff)
 endfunction()

@@ -40,4 +40,9 @@
 # debug information files
 *.dwo
 
+# CMake build
 build/*
+
+# Python virtual environments used for testing
+env
+venv

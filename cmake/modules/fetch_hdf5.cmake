@@ -3,12 +3,39 @@ cmake_minimum_required(VERSION 3.16)
 include(FetchContent)
 
 function(fetch_hdf5)
+	set(HDF5_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/hdf5)
+	set(HDF5_INCLUDE_DIR ${HDF5_INSTALL_DIR}/include)
+	file(MAKE_DIRECTORY ${HDF5_INCLUDE_DIR})
+
 	cmake_policy(SET CMP0135 NEW) # To avoid warnings
-	FetchContent_Declare(
-        hdf5
+	ExternalProject_Add(
+		hdf5_external
 		URL https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_10_11.tar.gz
+		PREFIX ${CMAKE_CURRENT_BINARY_DIR}/hdf5_build
+    	INSTALL_DIR ${HDF5_INSTALL_DIR}
+		CMAKE_ARGS
+			-DCMAKE_INSTALL_PREFIX=${HDF5_INSTALL_DIR}
+			-DPOSITION_INDEPENDENT_CODE=ON
+			-DBUILD_SHARED_LIBS=OFF
+			-DBUILD_STATIC_LIBS=ON
+			-DBUILD_TESTING=OFF
+			-DHDF5_BUILD_CPP_LIB=ON
+		LOG_DOWNLOAD ON
+		LOG_CONFIGURE ON
+		LOG_BUILD ON
 	)
 
-	set(HDF5_BUILD_CPP_LIB ON CACHE BOOL "" FORCE)
-	FetchContent_MakeAvailable(hdf5)
+	add_library(HDF5::HDF5 STATIC IMPORTED)
+	set_target_properties(HDF5::HDF5 PROPERTIES
+		IMPORTED_LOCATION ${HDF5_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}hdf5${CMAKE_STATIC_LIBRARY_SUFFIX}
+		INTERFACE_INCLUDE_DIRECTORIES ${HDF5_INCLUDE_DIR}
+	)
+	add_dependencies(HDF5::HDF5 hdf5_external)
+
+	add_library(HDF5::CXX STATIC IMPORTED)
+	set_target_properties(HDF5::CXX PROPERTIES
+		IMPORTED_LOCATION ${HDF5_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}hdf5_cpp${CMAKE_STATIC_LIBRARY_SUFFIX}
+		INTERFACE_INCLUDE_DIRECTORIES ${HDF5_INCLUDE_DIR}
+	)
+	add_dependencies(HDF5::CXX hdf5_external)
 endfunction()
