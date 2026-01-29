@@ -10,7 +10,7 @@ dynamic = ["version"]
 authors = [
     { name = "Oier Lauzirika Zarrabeitia", email = "oierlauzi@bizkaia.eu" },
 ]
-description = "Python binding for the xmipp4 framework"
+description = "Minimal version of xmipp3 package with Python bindings"
 classifiers = [
 	"Topic :: Scientific/Engineering :: Image Processing",
     "Intended Audience :: Science/Research",
@@ -24,9 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14"
+    "Programming Language :: Python :: 3.12"
 ]
 
 readme = {file = "README.md", content-type = "text/markdown"}
@@ -34,7 +32,8 @@ license = "GPL-3.0-only"
 
 requires-python = ">=3.7"
 dependencies = [
-] 
+    "numpy==1.*"
+]
 
 [project.urls]
 Homepage = "https://github.com/oierlauzi/pyxmipp3"
