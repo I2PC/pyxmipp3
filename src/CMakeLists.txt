@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Register all source and header files
-file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
+file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.c ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 
 
 FetchContent_GetProperties(fftw3_double SOURCE_DIR FFTW_SOURCE_DIR)
