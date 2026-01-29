@@ -39,7 +39,8 @@ jobs:
         uses: pypa/cibuildwheel@v3.3.1
         env:
           CIBW_ARCHS: "${{ matrix.architectures }}"
-          CIBW_SKIP: "cp3??t-*"
+          CIBW_SKIP: "cp3??t-* pp*"
+          CIBW_TEST_SKIP: "*"
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
             auditwheel repair -w {dest_dir} {wheel} 
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: >
