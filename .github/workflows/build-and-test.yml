@@ -16,9 +16,9 @@ jobs:
         - {cc: gcc, cxx: g++}
         - {cc: clang, cxx: clang++}
         
-        #include:
-        #- os: macos-latest
-        #  compiler: {cc: clang, cxx: clang++}
+        include:
+        - os: macos-latest
+          compiler: {cc: clang, cxx: clang++}
         #- os: windows-latest
         #  compiler: {cc: cl, cxx: cl}
           
