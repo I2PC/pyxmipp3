@@ -7,7 +7,6 @@ file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOUR
 FetchContent_GetProperties(fftw3_double SOURCE_DIR FFTW_SOURCE_DIR)
 set(FFTW_INCLUDE_DIR ${FFTW_SOURCE_DIR}/api)
 
-
 # Create the shared library
 add_library(xmippLib MODULE ${SOURCES})
 target_link_libraries(
@@ -15,9 +14,9 @@ target_link_libraries(
     PRIVATE 
         Threads::Threads
         Python::Module
-        HDF5::HDF5
-        HDF5::CXX
         sqlite3
+        HDF5::CXX
+        HDF5::HDF5
         FFTW3::Double
 		FFTW3::Float
 		FFTW3::DoubleThreads

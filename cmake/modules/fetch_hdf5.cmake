@@ -12,7 +12,7 @@ function(fetch_hdf5)
 	cmake_policy(SET CMP0135 NEW) # To avoid warnings
 	ExternalProject_Add(
 		hdf5_external
-		URL https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_10_11.tar.gz
+		URL https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_14_3.tar.gz
 		PREFIX ${CMAKE_CURRENT_BINARY_DIR}/hdf5_build
     	INSTALL_DIR ${HDF5_INSTALL_DIR}
 		CMAKE_ARGS
@@ -41,6 +41,7 @@ function(fetch_hdf5)
 	set_target_properties(HDF5::CXX PROPERTIES
 		IMPORTED_LOCATION ${HDF5_CPP_STATIC_LIBRARY}
 		INTERFACE_INCLUDE_DIRECTORIES ${HDF5_INCLUDE_DIR}
+		INTERFACE_LINK_LIBRARIES HDF5::HDF5
 	)
 	add_dependencies(HDF5::CXX hdf5_external)
 endfunction()
