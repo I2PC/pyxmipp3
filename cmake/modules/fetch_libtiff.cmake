@@ -11,5 +11,7 @@ function(fetch_libtiff)
 
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 	set(BUILD_SHARED_LIBS OFF)
+	set(tiff-install OFF)
+	set(tiff-docs OFF)
 	FetchContent_MakeAvailable(libtiff)
 endfunction()
