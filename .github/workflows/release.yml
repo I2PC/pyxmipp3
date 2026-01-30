@@ -76,6 +76,11 @@ jobs:
     needs: [build_wheels, build_sdist]
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pyxmipp3
+    permissions:
+      id-token:
     steps:
       - uses: actions/download-artifact@v7
         with:
@@ -86,6 +91,5 @@ jobs:
       - name: List artifacts
         run: ls -l ./dist
 
-      - name: Upload to PyPI # TODO enable this in the future
-        if: false
+      - name: Upload to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
