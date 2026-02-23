@@ -1,7 +1,7 @@
 [build-system]
 requires = [
     "scikit-build-core==0.11.*",
-    "numpy==1.*"
+    "numpy==2.*"
 ]
 build-backend = "scikit_build_core.build"
 
@@ -33,7 +33,7 @@ license = "GPL-3.0-only"
 
 requires-python = ">=3.7"
 dependencies = [
-    "numpy==1.*"
+    "numpy"
 ]
 
 [project.urls]
