@@ -43,3 +43,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Add sources
 add_subdirectory(src)
+
+# Install Python scripts
+install(DIRECTORY
+	${CMAKE_CURRENT_SOURCE_DIR}/python/
+	DESTINATION "${PYTHON_INSTALL_DIR}/"
+)
