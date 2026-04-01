@@ -44,22 +44,22 @@ int ImageBase::readINF(size_t select_img,bool isStack)
     printf("DEBUG readINF: Reading INF file\n");
 #endif
 
-    int _xDim,_yDim,_zDim, __depth;
+    int _xDim,_yDim,_zDim, _depth;
     size_t _nDim;
-    bool __is_signed;
+    bool _is_signed;
 
     _xDim = textToInteger(getParameter(fhed, "Xdim"));
     _yDim = textToInteger(getParameter(fhed, "Ydim"));
-    __depth = textToInteger(getParameter(fhed, "bitspersample"));
+    _depth = textToInteger(getParameter(fhed, "bitspersample"));
     if (checkParameter(fhed, "offset"))
         offset = textToInteger(getParameter(fhed, "offset"));
     else
         offset = 0;
     if (checkParameter(fhed, "is_signed"))
-        __is_signed = (getParameter(fhed, "is_signed") == "true" ||
+        _is_signed = (getParameter(fhed, "is_signed") == "true" ||
                        getParameter(fhed, "is_signed") == "TRUE");
     else
-        __is_signed = false;
+        _is_signed = false;
     if (checkParameter(fhed, "endianess") &&
         (getParameter(fhed, "endianess") == "big" || getParameter(fhed, "endianess") == "BIG"))
         swap = true;
@@ -73,16 +73,16 @@ int ImageBase::readINF(size_t select_img,bool isStack)
     _nDim = 1;
 
     DataType datatype;
-    switch ( __depth )
+    switch ( _depth )
     {
     case 8:
-        if (__is_signed)
+        if (_is_signed)
             datatype = DT_SChar;
         else
             datatype = DT_UChar;
         break;
     case 16:
-        if (__is_signed)
+        if (_is_signed)
             datatype = DT_Short;
         else
             datatype = DT_UShort;
