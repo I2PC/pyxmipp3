@@ -61,13 +61,14 @@ FetchContent_GetProperties(fftw3_double SOURCE_DIR FFTW_SOURCE_DIR)
 set(FFTW_INCLUDE_DIR ${FFTW_SOURCE_DIR}/api)
 
 # Register all source and header files
+set(XMIPP_CORE_DIR ${xmipp_core_sources_SOURCE_DIR})
 set(XMIPP3_LIBRARY_DIR ${xmipp3_sources_SOURCE_DIR}/src/xmipp/libraries)
 file(
 	GLOB_RECURSE 
 	SOURCES 
-        ${xmipp_core_sources_SOURCE_DIR}/core/*.cpp
-        ${xmipp_core_sources_SOURCE_DIR}/core/*.cc
-        ${xmipp_core_sources_SOURCE_DIR}/core/*.c
+        ${XMIPP_CORE_DIR}/core/*.cpp
+        ${XMIPP_CORE_DIR}/core/*.cc
+        ${XMIPP_CORE_DIR}/core/*.c
 		${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp 
 )
 list(
@@ -126,7 +127,7 @@ target_link_libraries(
 target_include_directories(
     xmippLib 
     PRIVATE 
-        ${xmipp_core_sources_SOURCE_DIR}
+        ${XMIPP_CORE_DIR}
         ${XMIPP3_LIBRARY_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${FFTW_INCLUDE_DIR}
