@@ -61,6 +61,7 @@ FetchContent_GetProperties(fftw3_double SOURCE_DIR FFTW_SOURCE_DIR)
 set(FFTW_INCLUDE_DIR ${FFTW_SOURCE_DIR}/api)
 
 # Register all source and header files
+set(XMIPP3_LIBRARY_DIR ${xmipp3_sources_SOURCE_DIR}/src/xmipp/libraries)
 file(
 	GLOB_RECURSE 
 	SOURCES 
@@ -68,6 +69,40 @@ file(
         ${xmipp_core_sources_SOURCE_DIR}/core/*.cc
         ${xmipp_core_sources_SOURCE_DIR}/core/*.c
 		${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp 
+)
+list(
+    APPEND
+    SOURCES
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_enhance_psd.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_micrograph.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_psd_base.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_psd.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_psd_fast.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_psd_with_arma.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/fringe_processing.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/psd_estimator.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/basic_pca.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/basis.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/blobs.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/cpu.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/ctf.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/fft_settings.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/fftwT.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/filters.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/fourier_filter.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/fourier_projection.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/grids.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/integration.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/mask.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/morphology.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/normalize.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/numerical_tools.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/polar.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/projection.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/splines.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/wavelet.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/xmipp_image_over.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/xmipp_polynomials.cpp
 )
 
 # Create the shared library
@@ -92,6 +127,7 @@ target_include_directories(
     xmippLib 
     PRIVATE 
         ${xmipp_core_sources_SOURCE_DIR}
+        ${XMIPP3_LIBRARY_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${FFTW_INCLUDE_DIR}
 )
