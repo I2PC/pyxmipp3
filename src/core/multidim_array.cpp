@@ -360,7 +360,10 @@ void sincos(const MultidimArray<double> &x, MultidimArray<double> &s, MultidimAr
     double *ptrC=MULTIDIM_ARRAY(c);
     size_t n;
     FOR_ALL_DIRECT_ELEMENTS_IN_MULTIDIMARRAY_ptr(x,n,ptr)
-    sincos(*ptr, ptrS++,ptrC++);
+    {
+        *(ptrC++) = cos(*ptr);
+        *(ptrS++) = sin(*ptr);
+    }
 }
 
 

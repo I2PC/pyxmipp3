@@ -1193,14 +1193,14 @@ void fitEllipse(Matrix1D<double> & xPts, Matrix1D<double> & yPts, double & x0, d
     }
 
 
-    double sEllipseAngle, cEllipseAngle;
-    sincos(-ellipseAngle,&sEllipseAngle,&cEllipseAngle);
+    double sEllipseAngle = -sin(ellipseAngle);
+    double cEllipseAngle = cos(ellipseAngle);
 
     double angle = 0, deltaAngle=(2*PI)/VEC_XSIZE(xPts);
     for (size_t nPoint = 0; nPoint < VEC_XSIZE(xPts); nPoint++)
     {
-    	double sAngle, cAngle;
-        sincos(angle,&sAngle,&cAngle);
+    	double sAngle = sin(angle);
+        double cAngle = cos(angle);
         //We impose that the origin always is zero and because this whe do not sum it
         double K1=majorAxis*cAngle;
         double K2=minorAxis*sAngle;
