@@ -29,12 +29,14 @@ include(fetch_sqlite3)
 include(fetch_fftw3)
 include(fetch_libtiff)
 include(fetch_libjpeg)
+include(fetch_libsvm)
 
 fetch_hdf5()
 fetch_sqlite3()
 fetch_fftw3()
 fetch_libtiff()
 fetch_libjpeg()
+fetch_libsvm()
 
 if(SKBUILD_PLATLIB_DIR)
 	set(PYTHON_INSTALL_DIR "${SKBUILD_PLATLIB_DIR}")
@@ -118,6 +120,7 @@ target_link_libraries(
         Python::Module
         Python::NumPy
         sqlite3
+        libsvm
         HDF5::CXX
         HDF5::HDF5
         FFTW3::Double
