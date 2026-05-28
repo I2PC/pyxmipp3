@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.18)
 
+set(XMIPP_CORE_REPO_REF "tags/v4.0.0" CACHE STRING "Xmipp Core's repository commit to be fetched")
+set(XMIPP3_REPO_REF "tags/v5.0.0-Beta-gal" CACHE STRING "Xmipp3's repository commit to be fetched")
+
 # Define the project
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION)
 string(STRIP "${PROJECT_VERSION}" PROJECT_VERSION)
@@ -43,11 +46,11 @@ endif()
 cmake_policy(SET CMP0135 NEW) # To avoid warnings
 FetchContent_Declare(
     xmipp_core_sources
-    URL https://github.com/I2PC/xmippCore/archive/refs/tags/v4.0.0.tar.gz
+    URL https://github.com/I2PC/xmippCore/archive/refs/${XMIPP_CORE_REPO_REF}.tar.gz
 )	
 FetchContent_Declare(
     xmipp3_sources
-	URL https://github.com/I2PC/xmipp3/archive/refs/tags/v5.0.0-Beta-gal.tar.gz
+	URL https://github.com/I2PC/xmipp3/archive/refs/${XMIPP3_REPO_REF}.tar.gz
 )
 FetchContent_Populate(xmipp_core_sources)
 FetchContent_Populate(xmipp3_sources)
