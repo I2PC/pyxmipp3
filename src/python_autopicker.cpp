@@ -27,6 +27,7 @@
 
 #include <core/metadata_row_base.h>
 #include <core/metadata_row_sql.h>
+#include <core/metadata_db.h>
 
 #include <vector>
 
@@ -149,25 +150,105 @@ Autopicker_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
     return (PyObject *)self;
 }//function Autopicker_new
 
-
 PyObject *
 Autopicker_train(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-    // TODO
+    int x;
+    int y;
+    int width;
+    int height;
+    PyObject *coordinates;
+    if (!PyArg_ParseTuple(args, "O!iiii", &PyList_Type, &coordinates, &x, &y, &width, &height)) 
+    {
+        return NULL; 
+    }
+
+    MetaDataDb md;
+    FileName micFile, posFile;
+    std::vector<MDRowSql> rows;
+    MDRowSql row;
+    const auto nCoordinates = PyList_Size(coordinates);
+    for (Py_ssize_t i = 0; i < nCoordinates; i++) {
+        PyObject *item = PyList_GetItem(coordinates, i);
+        if (!PyTuple_Check(item)) {
+            PyErr_Format(PyExc_TypeError, "List item at index %zd must be a tuple.", i);
+            return NULL;
+        }
+
+        if (PyTuple_Size(item) != 3) {
+            PyErr_Format(PyExc_ValueError, "Tuple at index %zd must have exactly 3 items.", i);
+            return NULL;
+        }
+
+        PyObject *micrograph = PyTuple_GetItem(item, 0);
+        PyObject *x = PyTuple_GetItem(item, 1);
+        PyObject *y = PyTuple_GetItem(item, 2);
+        if (!PyUnicode_Check(micrograph) || !PyLong_Check(x) || !PyLong_Check(y)) {
+            PyErr_Format(PyExc_TypeError, "Tuple at index %zd must contain a string and two integers.", i);
+            return NULL;
+        }
+
+        row.setValue(MDL_MICROGRAPH, String(PyUnicode_AsUTF8(micrograph)));
+        row.setValue(MDL_XCOOR, static_cast<int>(PyLong_AsLong(x)));
+        row.setValue(MDL_YCOOR, static_cast<int>(PyLong_AsLong(y)));
+        rows.push_back(row);
+    }
+
+    Autopicker_Value(self).train(rows, false, x, y, width, height); 
     Py_RETURN_NONE;
 }
 
 PyObject *
 Autopicker_autopick(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-    // TODO
-    Py_RETURN_NONE;
+    const char *micrograph;
+    int percent;
+    if (!PyArg_ParseTuple(args, "si", &micrograph)) 
+    {
+        return NULL; 
+    }
+
+    std::vector<MDRowSql> md;
+    Autopicker_Value(self).automaticallySelectParticles(String(micrograph), percent, md);
+    const auto count = md.size();
+
+    PyObject *coordinates = PyList_New(count);
+    PyObject *costs = PyList_New(count);
+    if (coordinates == NULL || costs == NULL) {
+        Py_XDECREF(coordinates);
+        Py_XDECREF(costs);
+        return NULL;
+    }
+
+    int x, y;
+    double c;
+    for (Py_ssize_t i = 0; i < count; i++) {
+        const auto &row = md[i];
+        row.getValue(MDL_XCOOR, x);
+		row.getValue(MDL_YCOOR, y);
+		row.getValue(MDL_COST, c);
+
+        PyObject *coordinate = Py_BuildValue("(ii)", x, y);
+        PyObject *cost = PyFloat_FromDouble(c);
+        if (coordinate == NULL || coordinate == NULL) {
+            Py_XDECREF(coordinate);
+            Py_XDECREF(cost);
+            Py_DECREF(coordinates);
+            Py_DECREF(costs);
+            return NULL;
+        }
+
+        PyList_SetItem(coordinates, i, coordinate);
+        PyList_SetItem(costs, i, cost);
+    }
+
+    return Py_BuildValue("(NN)", coordinates, costs);
 }
 
 PyObject *
 Autopicker_correct(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-    // TODO
+    //Autopicker_Value(self).correction(); // TODO
     Py_RETURN_NONE;
 }
 

@@ -86,6 +86,8 @@ list(
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_psd_fast.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_psd_with_arma.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/fringe_processing.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/image_rotational_pca.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/micrograph_automatic_picking2.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/psd_estimator.cpp
         ${XMIPP3_LIBRARY_DIR}/data/basic_pca.cpp
         ${XMIPP3_LIBRARY_DIR}/data/basis.cpp
