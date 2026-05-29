@@ -245,10 +245,55 @@ Autopicker_autopick(PyObject *self, PyObject *args, PyObject *kwargs)
     return Py_BuildValue("(NN)", coordinates, costs);
 }
 
+static bool coordinatesFromPyList(PyObject *list, std::vector<MDRowSql> &result)
+{
+    MDRowSql row;
+    const auto count = PyList_Size(list);
+    for (Py_ssize_t i = 0; i < count; i++) {
+        PyObject *item = PyList_GetItem(list, i);
+        if (!PyTuple_Check(item)) {
+            PyErr_Format(PyExc_TypeError, "List item at index %zd must be a tuple.", i);
+            return false;
+        }
+
+        if (PyTuple_Size(item) != 2) {
+            PyErr_Format(PyExc_ValueError, "Tuple at index %zd must have exactly 2 items.", i);
+            return false;
+        }
+
+        PyObject *x = PyTuple_GetItem(item, 0);
+        PyObject *y = PyTuple_GetItem(item, 1);
+        if (!PyLong_Check(x) || !PyLong_Check(y)) {
+            PyErr_Format(PyExc_TypeError, "Tuple at index %zd must contain two integers.", i);
+            return false;
+        }
+
+        row.setValue(MDL_XCOOR, static_cast<int>(PyLong_AsLong(x)));
+        row.setValue(MDL_YCOOR, static_cast<int>(PyLong_AsLong(y)));
+        result.push_back(row);
+    }
+
+    return true;
+}
+
 PyObject *
 Autopicker_correct(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-    //Autopicker_Value(self).correction(); // TODO
+    PyObject *added;
+    PyObject *removed;
+    if (!PyArg_ParseTuple(args, "O!O!", &PyList_Type, &added, &PyList_Type, &removed))
+    {
+        return NULL;
+    }
+
+    std::vector<MDRowSql> addedRows;
+    std::vector<MDRowSql> removedRows;
+    if (!coordinatesFromPyList(added, addedRows) || !coordinatesFromPyList(removed, removedRows))
+    {
+        return NULL;
+    }
+
+    Autopicker_Value(self).correction(addedRows, removedRows); 
     Py_RETURN_NONE;
 }
 
