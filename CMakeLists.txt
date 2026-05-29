@@ -79,6 +79,7 @@ file(
 list(
     APPEND
     SOURCES
+        ${XMIPP3_LIBRARY_DIR}/classification/svm_classifier.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_enhance_psd.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_micrograph.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_psd_base.cpp
@@ -102,6 +103,7 @@ list(
         ${XMIPP3_LIBRARY_DIR}/data/grids.cpp
         ${XMIPP3_LIBRARY_DIR}/data/integration.cpp
         ${XMIPP3_LIBRARY_DIR}/data/mask.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/micrograph.cpp
         ${XMIPP3_LIBRARY_DIR}/data/morphology.cpp
         ${XMIPP3_LIBRARY_DIR}/data/normalize.cpp
         ${XMIPP3_LIBRARY_DIR}/data/numerical_tools.cpp
