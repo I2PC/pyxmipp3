@@ -29,12 +29,14 @@ include(fetch_sqlite3)
 include(fetch_fftw3)
 include(fetch_libtiff)
 include(fetch_libjpeg)
+include(fetch_libsvm)
 
 fetch_hdf5()
 fetch_sqlite3()
 fetch_fftw3()
 fetch_libtiff()
 fetch_libjpeg()
+fetch_libsvm()
 
 if(SKBUILD_PLATLIB_DIR)
 	set(PYTHON_INSTALL_DIR "${SKBUILD_PLATLIB_DIR}")
@@ -77,6 +79,7 @@ file(
 list(
     APPEND
     SOURCES
+        ${XMIPP3_LIBRARY_DIR}/classification/svm_classifier.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_enhance_psd.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_micrograph.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_psd_base.cpp
@@ -84,6 +87,8 @@ list(
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_from_psd_fast.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/ctf_estimate_psd_with_arma.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/fringe_processing.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/image_rotational_pca.cpp
+        ${XMIPP3_LIBRARY_DIR}/reconstruction/micrograph_automatic_picking2.cpp
         ${XMIPP3_LIBRARY_DIR}/reconstruction/psd_estimator.cpp
         ${XMIPP3_LIBRARY_DIR}/data/basic_pca.cpp
         ${XMIPP3_LIBRARY_DIR}/data/basis.cpp
@@ -98,6 +103,7 @@ list(
         ${XMIPP3_LIBRARY_DIR}/data/grids.cpp
         ${XMIPP3_LIBRARY_DIR}/data/integration.cpp
         ${XMIPP3_LIBRARY_DIR}/data/mask.cpp
+        ${XMIPP3_LIBRARY_DIR}/data/micrograph.cpp
         ${XMIPP3_LIBRARY_DIR}/data/morphology.cpp
         ${XMIPP3_LIBRARY_DIR}/data/normalize.cpp
         ${XMIPP3_LIBRARY_DIR}/data/numerical_tools.cpp
@@ -118,6 +124,7 @@ target_link_libraries(
         Python::Module
         Python::NumPy
         sqlite3
+        libsvm
         HDF5::CXX
         HDF5::HDF5
         FFTW3::Double

@@ -41,6 +41,7 @@
 #include "python_program.h"
 #include "python_metadata.h"
 #include "python_symmetry.h"
+#include "python_autopicker.h"
 #include "reconstruction/ctf_estimate_from_micrograph.h"
 #include "numpy/arrayobject.h"
 
@@ -1521,6 +1522,7 @@ PyInit_xmippLib(void) {
     PyObject *module = PyModule_Create(&moduledef);
 
     //Check types and add to module
+    //INIT_TYPE(Autopicker);
     INIT_TYPE(FileName);
     INIT_TYPE(Image);
     INIT_TYPE(MDQuery);
@@ -1528,6 +1530,7 @@ PyInit_xmippLib(void) {
     INIT_TYPE(Program);
     INIT_TYPE(SymList);
     INIT_TYPE(FourierProjector);
+    INIT_TYPE(Autopicker);
 
 
     //Add PyXmippError
