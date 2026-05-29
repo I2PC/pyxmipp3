@@ -121,6 +121,7 @@ Autopicker_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
 
         const auto nMicrographs = PyList_Size(micrographs);
         std::vector<MDRowSql> micrographRows;
+        MDRowSql row;
 	    for(Py_ssize_t i = 0; i < nMicrographs; i++)
 	    {
             PyObject *item = PyList_GetItem(micrographs, i);
@@ -130,7 +131,6 @@ Autopicker_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
             }
             const char *micrographFn = PyUnicode_AsUTF8(item);
 
-            MDRowSql row;
             row.setValueFromStr(MDL_MICROGRAPH, String(micrographFn));
             micrographRows.push_back(row);
 	    }
@@ -203,7 +203,7 @@ Autopicker_autopick(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     const char *micrograph;
     int percent;
-    if (!PyArg_ParseTuple(args, "si", &micrograph)) 
+    if (!PyArg_ParseTuple(args, "si", &micrograph, &percent)) 
     {
         return NULL; 
     }
