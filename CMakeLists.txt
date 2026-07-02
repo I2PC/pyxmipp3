@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
 
-set(XMIPP_CORE_REPO_REF "tags/v4.0.0" CACHE STRING "Xmipp Core's repository commit to be fetched")
-set(XMIPP3_REPO_REF "tags/v5.0.0-Beta-gal" CACHE STRING "Xmipp3's repository commit to be fetched")
+set(XMIPP_CORE_REPO_REF "tags/v4.1.0" CACHE STRING "Xmipp Core's repository commit to be fetched")
+set(XMIPP3_REPO_REF "tags/v6.0.0-Cas9" CACHE STRING "Xmipp3's repository commit to be fetched")
 
 # Define the project
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION)
